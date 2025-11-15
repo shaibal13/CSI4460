@@ -25,7 +25,7 @@ CSI4460/
 └── main.py                       # Entry point to run training/evaluation
 ```
 ## Dataset Download
-👉  [**Download the dataset from Kaggle (Website)**]([https://www.kaggle.com/datasets/mrwellsdavid/unsw-nb15/data](https://www.kaggle.com/datasets/mrwellsdavid/unsw-nb15/data))
+👉  [**Download the dataset from Kaggle (Website)**](https://www.kaggle.com/datasets/mrwellsdavid/unsw-nb15/data)
 ## Trained Model
-👉  [**Download the trained model (Google Drive)**]([https://drive.google.com/drive/folders/18tpDPkw0tC9mf_HfYlu_ZCCebQhCNo6M?usp=drive_link](https://drive.google.com/drive/folders/1Jcmix6MMokSTROgOl4w5VfRs67p8IkSN?usp=drive_link))
+👉  [**Download the trained model (Google Drive)**](https://drive.google.com/drive/folders/1Jcmix6MMokSTROgOl4w5VfRs67p8IkSN?usp=drive_link)
 
