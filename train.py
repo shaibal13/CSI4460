@@ -869,8 +869,18 @@ def main():
 
         plot_loss_curves(history, out_dir, title_prefix="MLP")
 
-        # Load best model and evaluate on test
+        # Get best validation metrics from training history
+        best_val_f1 = max(history["val_f1"]) if history["val_f1"] else 0.0
+        best_val_epoch = history["val_f1"].index(best_val_f1) + 1 if history["val_f1"] else 0
+        best_val_loss = history["val_loss"][best_val_epoch - 1] if best_val_epoch > 0 else float("inf")
+        
+        # Recompute validation metrics for the best model
         trainer.load_best(best_model_path, device)
+        val_probs = trainer.predict_proba(X_val, device=device, batch_size=args.batch_size)
+        val_metrics = evaluate_binary(y_val, val_probs)
+        print("[MLP] Val metrics:", val_metrics)
+
+        # Load best model and evaluate on test
         test_probs = trainer.predict_proba(X_test_full, device=device, batch_size=args.batch_size)
         test_metrics = evaluate_binary(y_test, test_probs)
         print("[MLP] Test metrics:", test_metrics)
@@ -881,6 +891,7 @@ def main():
         metrics_path = os.path.join(out_dir, "metrics.txt")
         with open(metrics_path, "w") as f:
             f.write("MLP Metrics\n")
+            f.write(f"Val: {val_metrics}\n")
             f.write(f"Test: {test_metrics}\n")
             f.write(f"ROC-AUC: {curves['roc_auc']:.6f}, PR-AUC: {curves['pr_auc']:.6f}\n")
         print(f"[MLP] Metrics saved to {metrics_path}")
@@ -938,7 +949,13 @@ def main():
 
         plot_loss_curves(history, out_dir, title_prefix="FT-Transformer")
 
+        # Recompute validation metrics for the best model
         trainer.load_best(best_model_path, device)
+        val_probs = trainer.predict_proba(Xn_val, Xc_val, device=device, batch_size=args.batch_size)
+        val_metrics = evaluate_binary(yc_val, val_probs)
+        print("[FTT] Val metrics:", val_metrics)
+
+        # Load best model and evaluate on test
         test_probs = trainer.predict_proba(X_test_num, X_test_cat, device=device, batch_size=args.batch_size)
         test_metrics = evaluate_binary(y_test, test_probs)
         print("[FTT] Test metrics:", test_metrics)
@@ -949,6 +966,7 @@ def main():
         metrics_path = os.path.join(out_dir, "metrics.txt")
         with open(metrics_path, "w") as f:
             f.write("FT-Transformer Metrics\n")
+            f.write(f"Val: {val_metrics}\n")
             f.write(f"Test: {test_metrics}\n")
             f.write(f"ROC-AUC: {curves['roc_auc']:.6f}, PR-AUC: {curves['pr_auc']:.6f}\n")
         print(f"[FTT] Metrics saved to {metrics_path}")

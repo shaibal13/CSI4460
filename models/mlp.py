@@ -2,7 +2,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
-
+from utils.metrics import evaluate_binary_from_logits
 
 class MLPNet(nn.Module):
     def __init__(self, input_dim: int):
@@ -51,7 +51,7 @@ class MLPTrainer:
         best_state = None
         history = {"train_loss": [], "val_loss": [], "val_f1": []}
 
-        from utils.metrics import evaluate_binary_from_logits
+
 
         for epoch in range(1, epochs + 1):
             self.model.train()

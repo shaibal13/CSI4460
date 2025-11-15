@@ -7,7 +7,7 @@ class XGBoostModel:
         self.model = xgb.XGBClassifier(
             n_estimators=300,
             max_depth=10,
-            learning_rate=0.1,
+            learning_rate=0.001,
             subsample=0.8,
             colsample_bytree=0.8,
             objective="binary:logistic",
