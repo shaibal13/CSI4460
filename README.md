@@ -92,6 +92,7 @@ This setup follows the problem statement and milestones defined in the project d
 Exact values are saved in each model’s `metrics.txt`.
 
 ### Confusion Matrix
+
 <table>
   <tr>
     <td align="center">
@@ -115,6 +116,44 @@ Exact values are saved in each model’s `metrics.txt`.
   </tr>
 </table>
 
+### Training & Validation Loss
 
+<table>
+  <tr>
+    <td align="center">
+      <img src="results/mlp/loss_curves.png" width="300">
+      <br><b>MLP</b>
+    </td>
+    <td align="center">
+      <img src="results/ftt/loss_curves.png" width="300">
+      <br><b>FT-Transformer</b>
+    </td>
+  </tr>
+</table>
+
+### PR Curve
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="results/mlp/pr_curve.png" width="300">
+      <br><b>MLP</b>
+    </td>
+    <td align="center">
+      <img src="results/ftt/pr_curve.png" width="300">
+      <br><b>FT-Transformer</b>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="results/xgb/pr_curve.png" width="300">
+      <br><b>XGBoost</b>
+    </td>
+    <td align="center">
+      <img src="results/logreg/pr_curve.png" width="300">
+      <br><b>Logistic Regression</b>
+    </td>
+  </tr>
+</table>
 
 
