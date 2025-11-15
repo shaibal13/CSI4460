@@ -156,4 +156,18 @@ Exact values are saved in each model’s `metrics.txt`.
   </tr>
 </table>
 
+# 👉 How to Run
+## Training
+> python train.py --data_dir "D:/CSI4460/Datasets/UNSW" --model logreg
+> python train.py --data_dir "D:/CSI4460/Datasets/UNSW" --model xgb
+> python train.py --data_dir  "D:/CSI4460/Datasets/UNSW" --out_dir "D:/CSI4460/results" --model mlp --epochs 100 --batch_size 512
+> python train.py --data_dir "D:/CSI4460/Datasets/UNSW" --out_dir "D:/CSI4460/results"   --model ftt --epochs 100 --batch_size 512
+
+## Testing
+> python test.py --model logreg --model_path results/logreg/logreg_best.pkl --data_dir Datasets/UNSW
+> python test.py --model xgb --model_path results/xgb/xgboost_best.json --data_dir Datasets/UNSW
+> python test.py --model mlp --model_path results/mlp/mlp_best.pt --data_dir Datasets/UNSW
+> python test.py --model ftt --model_path results/ftt/ftt_best.pt --data_dir Datasets/UNSW
+
+
 
