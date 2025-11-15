@@ -40,11 +40,13 @@ ENV/
 # Jupyter Notebook
 .ipynb_checkpoints
 
-# Results and checkpoints (optional - uncomment if you don't want to track these)
-# results/
-# *.pt
-# *.pth
-# *.ckpt
+# Results and checkpoints - exclude large model files
+results/**/*.pt
+results/**/*.pth
+results/**/*.ckpt
+*.pt
+*.pth
+*.ckpt
 
 # OS
 .DS_Store
