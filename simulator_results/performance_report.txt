@@ -1,0 +1,32 @@
+NIDS Performance Report
+======================================================================
+
+Generated: 2025-11-18 02:48:10
+
+OVERALL STATISTICS
+----------------------------------------------------------------------
+Total Packets Analyzed: 115299
+Predicted Normal: 47243 (40.97%)
+Predicted Attack: 68056 (59.03%)
+
+Average Attack Probability: 0.5931
+Median Attack Probability: 0.9998
+Min Probability: 0.0000
+Max Probability: 1.0000
+
+VALIDATION METRICS
+----------------------------------------------------------------------
+Accuracy:  0.502520 (50.25%)
+Precision: 0.515796 (51.58%)
+Recall:    0.589877 (58.99%)
+F1 Score:  0.550355 (55.04%)
+
+CONFUSION MATRIX
+----------------------------------------------------------------------
+True Negatives (TN):   22837
+False Positives (FP):  32953
+False Negatives (FN):  24406
+True Positives (TP):   35103
+
+False Positive Rate: 59.07%
+False Negative Rate: 41.01%

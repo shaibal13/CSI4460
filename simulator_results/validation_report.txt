@@ -1,0 +1,36 @@
+NIDS Simulation Validation Report
+======================================================================
+
+Model: FT-Transformer
+Model Path: results/ftt/ftt_best.pt
+Threshold: 0.5
+Simulation Time: 2025-11-18 02:02:50
+
+PERFORMANCE METRICS
+----------------------------------------------------------------------
+Accuracy:  0.502520 (50.25%)
+Precision: 0.515796 (51.58%)
+Recall:    0.589877 (58.99%)
+F1 Score:  0.550355 (55.04%)
+
+CONFUSION MATRIX
+----------------------------------------------------------------------
+                Predicted
+              Normal  Attack
+Actual Normal   22837   32953
+        Attack   24406   35103
+
+DETAILED BREAKDOWN
+----------------------------------------------------------------------
+True Negatives (TN):   22837 - Normal correctly identified as Normal
+False Positives (FP):  32953 - Normal incorrectly flagged as Attack
+False Negatives (FN):  24406 - Attack missed (classified as Normal)
+True Positives (TP):   35103 - Attack correctly detected
+
+Total Normal Packets: 55790
+Total Attack Packets: 59509
+
+ERROR ANALYSIS
+----------------------------------------------------------------------
+False Positive Rate: 59.07% (32953 out of 55790 normal packets)
+False Negative Rate: 41.01% (24406 out of 59509 attack packets)

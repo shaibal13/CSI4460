@@ -1,0 +1,16 @@
+NIDS Simulation Summary
+==================================================
+
+Model: FT-Transformer
+Model Path: results/ftt/ftt_best.pt
+Threshold: 0.5
+
+Total Packets: 175341
+Normal Traffic: 71966 (41.04%)
+Attack Traffic: 103375 (58.96%)
+
+Performance Metrics:
+  Accuracy:  0.8958
+  Precision: 0.9889
+  Recall:    0.8566
+  F1 Score:  0.9180

@@ -1,0 +1,16 @@
+NIDS Simulation Report
+============================================================
+
+Model: FT-Transformer
+Model Path: results/ftt/ftt_best.pt
+Threshold: 0.5
+Simulation Time: 2025-11-18 02:02:50
+
+Statistics:
+  Total Packets: 115299
+  Normal Traffic: 47243 (40.97%)
+  Attack Traffic: 68056 (59.03%)
+  Total Alerts: 68056
+  Simulation Duration: 1694.88 seconds
+  Avg Processing Time: 6.15ms per packet
+  Processing Rate: 68.03 packets/second
