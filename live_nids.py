@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 """
+Explanation: Console version of nids_gui that uses real network traffic
+*MUST BE ON WINDOWS!
 Example:
     python live_nids.py --model_path results/ftt/ftt_best.pt --data_dir Datasets/UNSW --threshold 0.95
 """
@@ -131,9 +133,8 @@ def make_empty_unsw_row(all_cols):
 
 def packet_to_unsw_row(pkt, all_cols):
     """
-    Extremely simplified mapping: treat each packet as a tiny "flow".
-    This is *not* a perfect reproduction of UNSW features, but it's
-    enough to demonstrate true live detection with your model.
+    Extremely simplified mapping:
+    TODO better mapping that doesn't fill in junk
     """
     row = make_empty_unsw_row(all_cols)
 
@@ -205,7 +206,7 @@ def main():
     categories = prep["categories"]
     num_cont = prep["num_cont"]
 
-    # 2) Use your existing NIDSSimulator + model weights
+    # 2) Use existing NIDSSimulator + model weights
     device = "cuda" if os.environ.get("CUDA_VISIBLE_DEVICES") else "cpu"
     simulator = NIDSSimulator(
         model_path=args.model_path,

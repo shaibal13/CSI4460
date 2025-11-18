@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 """
+Explanation: GUI version of live_nids.py, built on top of nids_gui class
 Usage (example):
     python live_nids_gui.py --model_path results/ftt/ftt_best.pt --data_dir Datasets/UNSW --threshold 0.95"
 """
@@ -31,8 +32,7 @@ from simulator import NIDSSimulator
 
 def build_unsw_preprocessing(data_dir: str):
     """
-    Build scaler + label encoders and metadata from UNSW CSVs without touching
-    your existing loader.
+    Build scaler + label encoders and metadata from UNSW
     """
     train_path = os.path.join(data_dir, "UNSW_NB15_training-set.csv")
     test_path = os.path.join(data_dir, "UNSW_NB15_testing-set.csv")
