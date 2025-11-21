@@ -62,7 +62,7 @@ This setup follows the problem statement and milestones defined in the project d
 | **Batch Size** | 512 |
 | **Loss Function** | Binary Cross-Entropy (BCEWithLogits) |
 | **Optimizer** | AdamW |
-| **Learning Rate (DL Models)** | 0.001 |
+| **Learning Rate (DL Models)** | 0.0001 |
 | **Weight Decay** | 1e-4 |
 | **Imbalance Handling** | pos_weight = (neg / pos) |
 | **Train/Val Split** | 80% train / 20% validation |
