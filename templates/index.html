@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>NIDS Web UI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #101010;
+      color: #f0f0f0;
+      margin: 0;
+    }
+    header {
+      padding: 1rem 2rem;
+      background: #181818;
+      border-bottom: 1px solid #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    h1 {
+      margin: 0;
+      font-size: 1.3rem;
+    }
+    .status-text {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+    main {
+      padding: 1.5rem 2rem 2rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .card {
+      background: #1b1b1b;
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      border: 1px solid #333;
+    }
+    .card h2 {
+      margin: 0 0 0.4rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #c0c0c0;
+    }
+    .card .value {
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.5rem;
+    }
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    thead {
+      background: #202020;
+    }
+    th, td {
+      padding: 0.4rem 0.5rem;
+      border-bottom: 1px solid #333;
+      text-align: left;
+      white-space: nowrap;
+    }
+    tbody tr:nth-child(even) {
+      background: #151515;
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+    .badge-attack {
+      background: #4c0b0b;
+      color: #ff9b9b;
+    }
+    .badge-benign {
+      background: #073b15;
+      color: #9ff9c0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>NIDS | Web UI</h1>
+    <div class="status-text" id="status-text">Loading status…</div>
+  </header>
+
+  <main>
+    <!-- Top metrics -->
+    <section class="grid">
+      <div class="card">
+        <h2>Total Packets</h2>
+        <div class="value" id="total-packets">0</div>
+      </div>
+      <div class="card">
+        <h2>Threats Detected</h2>
+        <div class="value" id="threats-detected">0</div>
+      </div>
+      <div class="card">
+        <h2>Avg Processing (ms)</h2>
+        <div class="value" id="avg-processing-ms">0</div>
+      </div>
+    </section>
+
+    <!-- Tables layout -->
+    <section class="layout">
+      <!-- Live traffic -->
+      <div class="card">
+        <h2>Live Network Traffic Flow</h2>
+        <div style="overflow-x:auto; max-height: 400px;">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Timestamp</th>
+                <th>Confidence</th>
+                <th>Classification</th>
+              </tr>
+            </thead>
+            <tbody id="packets-body">
+              <!-- Filled by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Quarantine / Alerts -->
+      <div class="card">
+        <h2>Quarantine / Alerts</h2>
+        <div style="overflow-x:auto; max-height: 400px;">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Timestamp</th>
+                <th>Confidence</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="alerts-body">
+              <!-- Filled by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    async function fetchJSON(url, options) {
+      const res = await fetch(url, options);
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      return res.json();
+    }
+
+    async function refreshStatus() {
+      try {
+        const data = await fetchJSON("/api/status");
+        document.getElementById("status-text").textContent =
+          "Status: " + data.status;
+        document.getElementById("total-packets").textContent =
+          data.total_packets;
+        document.getElementById("threats-detected").textContent =
+          data.threats_detected;
+        document.getElementById("avg-processing-ms").textContent =
+          data.avg_processing_ms.toFixed(2);
+      } catch (err) {
+        document.getElementById("status-text").textContent =
+          "Status: ERROR (" + err.toString() + ")";
+      }
+    }
+
+    function classificationBadge(cls) {
+      const span = document.createElement("span");
+      span.textContent = cls;
+      span.classList.add("badge");
+      if (cls === "ATTACK") {
+        span.classList.add("badge-attack");
+      } else {
+        span.classList.add("badge-benign");
+      }
+      return span;
+    }
+
+    async function refreshPackets() {
+      try {
+        const packets = await fetchJSON("/api/packets");
+        const tbody = document.getElementById("packets-body");
+        tbody.innerHTML = "";
+        packets.forEach(p => {
+          const tr = document.createElement("tr");
+
+          const tdId = document.createElement("td");
+          tdId.textContent = p.id;
+          tr.appendChild(tdId);
+
+          const tdTs = document.createElement("td");
+          tdTs.textContent = p.timestamp;
+          tr.appendChild(tdTs);
+
+          const tdConf = document.createElement("td");
+          tdConf.textContent = p.confidence.toFixed(2);
+          tr.appendChild(tdConf);
+
+          const tdCls = document.createElement("td");
+          tdCls.appendChild(classificationBadge(p.classification));
+          tr.appendChild(tdCls);
+
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        console.error("Error loading packets:", err);
+      }
+    }
+
+    async function refreshAlerts() {
+      try {
+        const alerts = await fetchJSON("/api/alerts");
+        const tbody = document.getElementById("alerts-body");
+        tbody.innerHTML = "";
+        alerts.forEach(a => {
+          const tr = document.createElement("tr");
+
+          const tdId = document.createElement("td");
+          tdId.textContent = a.id;
+          tr.appendChild(tdId);
+
+          const tdTs = document.createElement("td");
+          tdTs.textContent = a.timestamp;
+          tr.appendChild(tdTs);
+
+          const tdConf = document.createElement("td");
+          tdConf.textContent = a.confidence.toFixed(2);
+          tr.appendChild(tdConf);
+
+          const tdAct = document.createElement("td");
+          tdAct.textContent = a.action;
+          tr.appendChild(tdAct);
+
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        console.error("Error loading alerts:", err);
+      }
+    }
+
+    // Initial load
+    refreshStatus();
+    refreshPackets();
+    refreshAlerts();
+
+    // Poll periodically (every 2 seconds)
+    setInterval(refreshStatus, 2000);
+    setInterval(refreshPackets, 2000);
+    setInterval(refreshAlerts, 2000);
+  </script>
+</body>
+</html>
