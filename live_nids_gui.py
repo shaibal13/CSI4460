@@ -22,6 +22,7 @@ import ttkbootstrap as tb
 
 from nids_gui import NIDSGuiApp, THEME_NAME
 from simulator import NIDSSimulator
+from quarantine import QuarantineManager
 
 
 # -----------------------------
@@ -274,6 +275,8 @@ class LiveNIDSGuiApp(NIDSGuiApp):
             # Initialize Flow Manager
             self.flow_manager = FlowManager(timeout=10.0)
 
+            self.quarantine = QuarantineManager(enable_real_blocking=False, log_path="demo_quarantine.log")
+
             self.lbl_status.config(text="Live Flow Monitor Ready. Press START.")
         except Exception as e:
             self.lbl_status.config(text=f"Error loading: {e}", bootstyle="danger")
@@ -306,6 +309,10 @@ class LiveNIDSGuiApp(NIDSGuiApp):
                 prob, pred = self.simulator.predict_single(x_num, x_cat)
                 compute_time = time.time() - start_compute
                 is_attack = (pred == 1)
+
+                if is_attack:
+                    attacker_ip = flow.src_ip
+                    self.quarantine.block_ip(attacker_ip, reason=f"Malicious Probability: {prob:.4f}")
 
                 # 4. Push to GUI
                 packet_data = {

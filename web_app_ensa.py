@@ -2,7 +2,7 @@
 
 import os
 from flask import Flask, jsonify, render_template
-from sim_controller import SimulationController
+from sim_controller_ensa import SimulationController
 
 #CONFIG
 MODEL_PATH = os.path.join("models", "ftt_best.pt")

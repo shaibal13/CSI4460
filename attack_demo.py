@@ -38,10 +38,6 @@ def random_payload(length=50):
 # ---------------------------------------------------------------------
 
 def attack_syn_flood(target_ip, iface, target_mac, duration=15):
-    """
-    Category: DoS
-    Traits: High rate, small packets, Flags=S.
-    """
     print(f"\n[>>>] LAUNCHING TCP SYN FLOOD (DoS) against {target_ip}...")
     print(f"      Strategy: Single-Flow Overload")
 
@@ -71,10 +67,6 @@ def attack_syn_flood(target_ip, iface, target_mac, duration=15):
 
 
 def attack_udp_flood(target_ip, iface, target_mac, duration=15):
-    """
-    Category: Generic / DoS
-    Traits: UDP, TTL=254, High Bytes (Spike 'sload'), Random Ports.
-    """
     print(f"\n[>>>] LAUNCHING GENERIC UDP FLOOD against {target_ip}...")
     print(f"      Strategy: High Payload Size + TTL 254")
 
@@ -137,7 +129,7 @@ def main():
         print("3. Exit")
 
         try:
-            choice = input("\nSelect Attack [1-5]: ")
+            choice = input("\nSelect Attack [1-3]: ")
 
             if choice == '1':
                 attack_syn_flood(target_ip, iface, target_mac)
