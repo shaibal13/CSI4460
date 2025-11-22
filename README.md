@@ -52,7 +52,7 @@ We evaluate four modern ML/DL models:
 # 👉 Evaluation
 ## Experiment settings
 We conducted all experiments using 1× NVIDIA RTX 4070 (16 GB) GPU. We train all the models on the UNSW-NB15 dataset as the primary dataset and evaluated on both validation and test splits.
-This setup follows the problem statement and milestones defined in the project description.
+
 
 ## ⚙️ Training Parameters Summary
 
@@ -62,7 +62,7 @@ This setup follows the problem statement and milestones defined in the project d
 | **Batch Size** | 512 |
 | **Loss Function** | Binary Cross-Entropy (BCEWithLogits) |
 | **Optimizer** | AdamW |
-| **Learning Rate (DL Models)** | 0.001 |
+| **Learning Rate (DL Models)** | 0.0001 |
 | **Weight Decay** | 1e-4 |
 | **Imbalance Handling** | pos_weight = (neg / pos) |
 | **Train/Val Split** | 80% train / 20% validation |
@@ -175,6 +175,3 @@ python test.py --model xgb --model_path results/xgb/xgboost_best.json --data_dir
 python test.py --model mlp --model_path results/mlp/mlp_best.pt --data_dir Datasets/UNSW
 python test.py --model ftt --model_path results/ftt/ftt_best.pt --data_dir Datasets/UNSW
 ```
-
-
-
