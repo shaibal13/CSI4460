@@ -21,3 +21,4 @@ tqdm>=4.66.0
 kaggle
 kagglehub
 pyshark>=0.6.0
+flask>=3.0.0
